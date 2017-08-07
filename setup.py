@@ -40,9 +40,9 @@ tests_require = [
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
+    'pytest>=3.2.0',
     'python-memcached>=1.58',
-    'redis>=2.0',
+    'redis>=2.10.5',
 ]
 
 extras_require = {
@@ -65,7 +65,7 @@ setup_requires = [
 
 install_requires = [
     'Flask-Caching>=1.3.2',
-    'Jinja2>=2.8.0',
+    'Flask>=0.11.1',
 ]
 
 packages = find_packages()
