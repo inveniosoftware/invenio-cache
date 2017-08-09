@@ -43,7 +43,7 @@ services:
 env:
   - REQUIREMENTS=lowest CACHE_TYPE=redis
   - REQUIREMENTS=lowest CACHE_TYPE=memcached
-  - REQUIREMENTS=release CACHE_TYPE=redis
+  - REQUIREMENTS=release CACHE_TYPE=redis DEPLOY=true
   - REQUIREMENTS=release CACHE_TYPE=memcached
   - REQUIREMENTS=devel CACHE_TYPE=redis
   - REQUIREMENTS=devel CACHE_TYPE=memcached
