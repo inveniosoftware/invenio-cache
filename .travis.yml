@@ -16,6 +16,9 @@ language: python
 
 matrix:
   fast_finish: true
+  allow_failures:
+    - env: REQUIREMENTS=devel CACHE_TYPE=redis
+    - env: REQUIREMENTS=devel CACHE_TYPE=memcached
 
 cache:
   - pip
