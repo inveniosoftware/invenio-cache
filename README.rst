@@ -1,3 +1,10 @@
+..
+    This file is part of Invenio.
+    Copyright (C) 2017-2018 CERN.
+
+    Invenio is free software; you can redistribute it and/or modify it
+    under the terms of the MIT License; see LICENSE file for more details.
+
 ===============
  Invenio-Cache
 ===============
@@ -8,14 +15,8 @@
 .. image:: https://img.shields.io/coveralls/inveniosoftware/invenio-cache.svg
         :target: https://coveralls.io/r/inveniosoftware/invenio-cache
 
-.. image:: https://img.shields.io/github/tag/inveniosoftware/invenio-cache.svg
-        :target: https://github.com/inveniosoftware/invenio-cache/releases
-
-.. image:: https://img.shields.io/pypi/dm/invenio-cache.svg
-        :target: https://pypi.python.org/pypi/invenio-cache
-
-.. image:: https://img.shields.io/github/license/inveniosoftware/invenio-cache.svg
-        :target: https://github.com/inveniosoftware/invenio-cache/blob/master/LICENSE
+.. image:: https://img.shields.io/pypi/v/invenio-cache.svg
+        :target: https://pypi.org/pypi/invenio-cache
 
 Cache module for Invenio.
 
