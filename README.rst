@@ -9,6 +9,9 @@
  Invenio-Cache
 ===============
 
+.. image:: https://img.shields.io/github/license/inveniosoftware/invenio-cache.svg
+        :target: https://github.com/inveniosoftware/invenio-cache/blob/master/LICENSE
+
 .. image:: https://img.shields.io/travis/inveniosoftware/invenio-cache.svg
         :target: https://travis-ci.org/inveniosoftware/invenio-cache
 
