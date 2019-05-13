@@ -72,9 +72,9 @@ as cache decorators for view, memoization of functions, Jinja snippet caching.
 
 from __future__ import absolute_import, print_function
 
-from .ext import InvenioCache
 from .bccache import BytecodeCache
 from .decorators import cached_unless_authenticated
+from .ext import InvenioCache
 from .proxies import current_cache, current_cache_ext
 from .version import __version__
 
