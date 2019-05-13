@@ -26,6 +26,7 @@ tests_require = [
     'pytest>=3.2.0',
     'python-memcached>=1.58',
     'redis>=2.10.5',
+    'pylibmc>=1.6.0',
 ]
 
 extras_require = {
