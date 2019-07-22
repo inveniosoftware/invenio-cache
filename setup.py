@@ -23,7 +23,7 @@ tests_require = [
     'pydocstyle>=1.0.0',
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=3.2.0',
+    'pytest>=3.8.0,<5.0.0',
     'redis>=2.10.5',
     'pylibmc>=1.6.0',
 ]
@@ -33,7 +33,7 @@ extras_require = {
         'Flask-Login>=0.3.0',
     ],
     'docs': [
-        'Sphinx>=1.5.1',
+        'Sphinx>=1.8.5',
     ],
     'tests': tests_require,
 }
