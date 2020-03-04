@@ -7,3 +7,4 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 -e git+https://github.com/sh4nks/flask-caching.git#egg=Flask-Caching
+-e git+https://github.com/inveniosoftware/invenio-base.git#egg=invenio-base

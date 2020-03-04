@@ -9,9 +9,6 @@
 notifications:
   email: false
 
-dist: trusty
-sudo: false
-
 language: python
 
 matrix:
@@ -36,10 +33,11 @@ env:
   - REQUIREMENTS=devel CACHE_TYPE=memcached
 
 python:
-  - "2.7"
-  - "3.5"
+  - "3.6"
+  - "3.7"
 
 before_install:
+  - "pip uninstall -y six"
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
   - "requirements-builder -e all --level=min setup.py > .travis-lowest-requirements.txt"
@@ -62,8 +60,9 @@ deploy:
   password:
     secure: "y7d6ACYJun6srBM4dWi2bzqFMgBrZ4TZCLRhTCLiYfZLzASqxOwIKvST3cgjcezwuSYrk4Ng786kISFE2mdUDXi2IbWRckKRt4jUs0ef9+RdqE/YHcVZilrLCs95mzGWbvT9927GNIFLL+ZEJRv6e+KlHD03FEk/Dhbet5Lw8aprFjKV9JpT+ASErR3amrarb1uTGjsuA0aXMtAPDyueRXcwYewuYI+KNC2FNPU8G+6Om11nQT9OF63rsUv1ig5enXmKPpncp8XSIP/ccIPbwJVJxJgCVNSQuqK++nynwhTfMGynaxQrmdDwQh70YZui8u22icywpAZQ7+4dS3O/USmKH2D9Ul6CxSn7LhNPCtL35x/QNtzgYZDtNePlNlc8IilZ8538oMHZE9g1My+LHQD5+CdszsXyoiV+l32ml+MRk1xb20Qnv9Vvwml0Vj84vczTiB4FVEj+DF2qsLXQj8Z15ckdptQdnglazA9pxRtE53a7169mndTt0CbJYkC0YyAZS7GZ1S3fJswv317HKQy3/CO28zTrbXsjO59FsoG4UPjjetsa1rfb04BwK9vyz9ZOMWoEgc93HtVMql5jZ2ukzLlvzH0aXuLACyTKctRgzb+qxDoEGECwvHVnMAbZFb+OH59R38VqC5IGs378o+9ZPGCdF96QOBSBF4ZftzU="
   distributions: "sdist bdist_wheel"
+  skip_existing: true
   on:
     tags: true
-    python: "2.7"
+    python: "3.6"
     repo: inveniosoftware/invenio-cache
     condition: $DEPLOY = true
