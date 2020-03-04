@@ -30,7 +30,7 @@ tests_require = [
 
 extras_require = {
     'login': [
-        'Flask-Login>=0.3.0',
+        'invenio-accounts>=1.2.0',
     ],
     'docs': [
         'Sphinx>=1.8.5',
@@ -47,8 +47,8 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask-Caching>=1.3.2',
-    'Flask>=0.11.1',
+    'Flask-Caching>=1.8.0',
+    'invenio-base>=1.2.2',
 ]
 
 packages = find_packages()
