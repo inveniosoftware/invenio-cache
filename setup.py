@@ -33,7 +33,7 @@ extras_require = {
         'invenio-accounts>=1.2.0',
     ],
     'docs': [
-        'Sphinx>=1.8.5',
+        'Sphinx>=1.8.5,<3',
     ],
     'tests': tests_require,
 }
