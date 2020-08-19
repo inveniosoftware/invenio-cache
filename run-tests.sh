@@ -10,7 +10,7 @@
 export PYTEST_ADDOPTS='docs tests invenio_cache'
 
 pydocstyle invenio_cache tests docs && \
-isort -rc -c -df && \
+isort invenio_cache tests --check-only --diff && \
 check-manifest --ignore ".travis-*" && \
 sphinx-build -qnNW docs docs/_build/html && \
 python setup.py test
