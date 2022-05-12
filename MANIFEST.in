@@ -24,3 +24,4 @@ recursive-include invenio_cache *.po *.pot *.mo
 recursive-include tests *.html
 recursive-include tests *.py
 recursive-include .github/workflows *.yml
+include .git-blame-ignore-revs
