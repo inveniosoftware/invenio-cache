@@ -31,8 +31,8 @@ def instance_path():
 @pytest.fixture()
 def template_folder(instance_path):
     """Temporary instance path."""
-    src = os.path.join(os.path.dirname(__file__), 'template.html')
-    dst = os.path.join(instance_path, 'templates/template.html')
+    src = os.path.join(os.path.dirname(__file__), "template.html")
+    dst = os.path.join(instance_path, "templates/template.html")
     os.makedirs(os.path.dirname(dst))
     shutil.copy(src, dst)
     return os.path.dirname(dst)
@@ -41,20 +41,22 @@ def template_folder(instance_path):
 @pytest.fixture()
 def cache_config():
     """Generate cache configuration."""
-    CACHE_TYPE = os.environ.get('CACHE_TYPE', 'simple')
-    config = {'CACHE_TYPE': CACHE_TYPE}
+    CACHE_TYPE = os.environ.get("CACHE_TYPE", "simple")
+    config = {"CACHE_TYPE": CACHE_TYPE}
 
-    if CACHE_TYPE == 'simple':
+    if CACHE_TYPE == "simple":
         pass
-    elif CACHE_TYPE == 'redis':
+    elif CACHE_TYPE == "redis":
         config.update(
             CACHE_REDIS_URL=os.environ.get(
-                'CACHE_REDIS_URL', 'redis://localhost:6379/0')
+                "CACHE_REDIS_URL", "redis://localhost:6379/0"
+            )
         )
-    elif CACHE_TYPE == 'memcached':
+    elif CACHE_TYPE == "memcached":
         config.update(
             CACHE_MEMCACHED_SERVERS=os.environ.get(
-                'CACHE_MEMCACHED_SERVERS', 'localhost:11211').split(',')
+                "CACHE_MEMCACHED_SERVERS", "localhost:11211"
+            ).split(",")
         )
     return config
 
@@ -63,12 +65,12 @@ def cache_config():
 def base_app(instance_path, template_folder, cache_config):
     """Flask application fixture."""
     app_ = Flask(
-        'testapp',
+        "testapp",
         instance_path=instance_path,
         template_folder=template_folder,
     )
     app_.config.update(
-        SECRET_KEY='SECRET_KEY',
+        SECRET_KEY="SECRET_KEY",
         TESTING=True,
     )
     print(cache_config)
@@ -87,4 +89,4 @@ def app(base_app):
 @pytest.fixture()
 def ext(base_app):
     """Extension."""
-    return base_app.extensions['invenio-cache']
+    return base_app.extensions["invenio-cache"]

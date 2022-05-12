@@ -19,14 +19,12 @@ def test_bccache(base_app, ext):
     """Test bytecode cache."""
     app = base_app
     app.jinja_options = dict(
-        app.jinja_options,
-        cache_size=1000,
-        bytecode_cache=BytecodeCache(app)
+        app.jinja_options, cache_size=1000, bytecode_cache=BytecodeCache(app)
     )
 
-    @app.route('/')
+    @app.route("/")
     def view():
-        return render_template('template.html', msg='test')
+        return render_template("template.html", msg="test")
 
     with app.test_client() as c:
-        assert c.get('/').get_data(as_text=True) == 'test'
+        assert c.get("/").get_data(as_text=True) == "test"

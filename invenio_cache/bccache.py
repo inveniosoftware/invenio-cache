@@ -20,8 +20,7 @@ class BytecodeCache(MemcachedBytecodeCache):
 
     def __init__(self, app):
         """Initialize `BytecodeCache`."""
-        prefix = "{0}jinja::".format(app.config.get('CACHE_KEY_PREFIX'))
+        prefix = "{0}jinja::".format(app.config.get("CACHE_KEY_PREFIX"))
         super(self.__class__, self).__init__(
-            current_cache, prefix=prefix, timeout=None,
-            ignore_memcache_errors=True
+            current_cache, prefix=prefix, timeout=None, ignore_memcache_errors=True
         )

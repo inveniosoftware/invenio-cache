@@ -31,13 +31,14 @@ class InvenioCache(object):
         self.init_config(app)
         self.cache = Cache(app)
         self.is_authenticated_callback = _callback_factory(
-            app.config['CACHE_IS_AUTHENTICATED_CALLBACK'])
-        app.extensions['invenio-cache'] = self
+            app.config["CACHE_IS_AUTHENTICATED_CALLBACK"]
+        )
+        app.extensions["invenio-cache"] = self
 
     def init_config(self, app):
         """Initialize configuration."""
         for k in dir(config):
-            if k.startswith('CACHE_'):
+            if k.startswith("CACHE_"):
                 app.config.setdefault(k, getattr(config, k))
 
 
@@ -45,8 +46,9 @@ def _callback_factory(callback_imp):
     """Factory for creating a is authenticated callback."""
     if callback_imp is None:
         try:
-            pkg_resources.get_distribution('flask-login')
+            pkg_resources.get_distribution("flask-login")
             from flask_login import current_user
+
             return lambda: current_user.is_authenticated
         except pkg_resources.DistributionNotFound:
             return lambda: False

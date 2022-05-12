@@ -16,17 +16,17 @@ For how to configure other cache backends please refer to the `Flask-Caching
 documentation.
 """
 
-CACHE_KEY_PREFIX = 'cache::'
+CACHE_KEY_PREFIX = "cache::"
 """Cache key prefix."""
 
 #: Sets the cache type.
-CACHE_TYPE = 'redis'
+CACHE_TYPE = "redis"
 """Cache type.
 
 Please refer to Flask-Caching documentation for other cache types.
 """
 
-CACHE_REDIS_URL = 'redis://localhost:6379/0'
+CACHE_REDIS_URL = "redis://localhost:6379/0"
 """Redis location and database."""
 
 
