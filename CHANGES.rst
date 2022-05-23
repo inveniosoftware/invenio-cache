@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.1.1 (released 2022-05-23)
+
+- Moved from setup.py to setup.cfg
+
 Version 1.1.0 (released 2020-03-10)
 
 - changes flask dependency to centrally managed
