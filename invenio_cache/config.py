@@ -16,8 +16,6 @@ For how to configure other cache backends please refer to the `Flask-Caching
 documentation.
 """
 
-from invenio_cache.lock import CachedMutex
-
 CACHE_KEY_PREFIX = "cache::"
 """Cache key prefix."""
 
