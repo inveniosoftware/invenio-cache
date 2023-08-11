@@ -73,7 +73,6 @@ def base_app(instance_path, template_folder, cache_config):
         SECRET_KEY="SECRET_KEY",
         TESTING=True,
     )
-    print(cache_config)
     app_.config.update(cache_config)
     InvenioCache(app_)
     return app_
