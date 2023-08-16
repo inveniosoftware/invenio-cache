@@ -11,6 +11,11 @@ from datetime import datetime
 
 from flask import current_app
 
+from invenio_cache.errors import (
+    LockAcquireFailed,
+    LockReleaseFailed,
+    LockRenewPermissionDenied,
+)
 from invenio_cache.proxies import current_cache
 
 
@@ -28,24 +33,25 @@ class Lock:
         .. code-block:: python
 
             with lock(lock_id) as lock:
-                if lock.acquired():
-                    f()
+                lock.acquire()
+                f()
 
         2) manually calling each block / unblock mechanism:
 
         .. code-block:: python
 
             lock = lock(lock_id)
-            acquired = lock.acquire()
-            if acquired:
-                    f()
-                    lock.release()
+            try:
+                lock.acquire()
+                f()
+                lock.release()
+            except LockAcquireFailed:
+                pass
 
         :param lock_id: id of the lock.
         :type lock_id: str
         """
         self.lock_id = lock_id
-        self._acquired = False
         self._created = datetime.utcnow()
 
     def __enter__(self):
@@ -53,18 +59,10 @@ class Lock:
         return self
 
     def __exit__(self, exc_type, *args):
-        """Releases the lock if it was previously acquired."""
-        if self.acquired:
+        """Releases the lock."""
+        # Release the lock only when acquired the lock
+        if exc_type is not LockAcquireFailed:
             self.release()
-
-    @property
-    def acquired(self):
-        """Property to check if the lock was acquired."""
-        return self._acquired
-
-    @acquired.setter
-    def acquired(self, value):
-        self._acquired = value
 
     @property
     def created(self):
@@ -74,8 +72,10 @@ class Lock:
     def acquire(self, **kwargs):
         """Attempts to acquire the lock.
 
-        The method to adcquire the lock must be atomic.
-        It must return a boolean.
+        .. warning:
+
+            The method to adcquire the lock must be atomic.
+
         """
         raise NotImplementedError
 
@@ -86,6 +86,10 @@ class Lock:
     def exists(self):
         """Checks if the lock exists."""
         raise NotImplementedError
+
+    def __repr__(self):
+        """Lock string representation."""
+        return f"<Lock {self.lock_id}>"
 
 
 class CachedMutex(Lock):
@@ -104,10 +108,14 @@ class CachedMutex(Lock):
 
         The method to adcquire the lock must be atomic.
 
+        If an error occurred with the backend, the exception is logged and re-raised.
+        If the lock was not released, a ``LockReleaseFailed`` exception is raised.
+
         :returns: ``True`` if the lock was acquired, ``False`` otherwise .
         :rtype: boolean
         :param timeout: lock key timeout.
-        :type timeout: int, optional
+        :type timeout: int
+        :raises: Exception, LockReleaseFailed
         """
         success = False
         try:
@@ -119,28 +127,35 @@ class CachedMutex(Lock):
                 f"Unexpected backend failure when acquiring lock {self.lock_id}."
             )
             raise
-        self.acquired = success
+
+        if not success:
+            raise LockAcquireFailed(self)
+
         return success
 
     def release(self):
         """Attempts to release the lock.
 
-        The lock will only be released if it was previously acquired by this instance.
+        If an error occurred with the backend, the exception is logged and re-raised.
+        If the lock was not released, a ``LockReleaseFailed`` exception is raised.
 
         :returns: ``True`` if the lock was released, ``False`` otherwise .
         :rtype: boolean
+        :raises: Exception, LockReleaseFailed
         """
         success = False
         try:
-            # Release the lock only if it was acquired by this instance
-            if self.acquired:
-                success = self._cache.delete(self.lock_id)
+            success = self._cache.delete(self.lock_id)
         except:
             # Unexpected error with the cache, we just log it and re-raise
             current_app.logger.error(
                 f"Unexpected backend failure when releasing lock {self.lock_id}."
             )
             raise
+
+        if not success:
+            raise LockReleaseFailed(self)
+
         return success
 
     def exists(self):
@@ -148,6 +163,7 @@ class CachedMutex(Lock):
 
         :return: ``True``if the lock exists, ``False``otherwise.
         :rtype: bool
+        :raises: Exception
         """
         exists = False
         try:
@@ -168,8 +184,8 @@ class CachedMutex(Lock):
         """
         return True
 
-    def renew(self, timeout):
-        """Renews the lock's timeout.
+    def acquire_or_renew(self, timeout):
+        """Attempts to acquire the lock. If not possible, renews its timeout.
 
         The lock's timeout is updated in the cache, effectively prolonging the lock's duration.
 
@@ -183,13 +199,26 @@ class CachedMutex(Lock):
 
         :param timeout: New timeout, in seconds.
         :type timeout: int
+        :raises: Exception, LockAcquireFailed, LockRenewPermissionDenied
         """
         success = False
-        if self._has_permission():
-            # Overwrites previous timeout. If it didn't exist, the lock is created.
-            success = self._cache.set(self.lock_id, True, timeout)
-            if success:
-                self.timeout = timeout
+        if not self._has_permission():
+            raise LockRenewPermissionDenied(self)
 
-            self.acquired = success
+        # Overwrites previous timeout. If it didn't exist, the lock is created.
+        try:
+            success = self.acquire(timeout=timeout)
+        except LockAcquireFailed:
+            # Renew the lock if it already existed before
+            success = self._cache.set(self.lock_id, True, timeout)
+        except:
+            # Unexpected error with the cache, we just log it and re-raise
+            current_app.logger.error(
+                f"Unexpected backend failure when releasing lock {self.lock_id}."
+            )
+            raise
+
+        if not success:
+            raise LockAcquireFailed(self)
+
         return success
