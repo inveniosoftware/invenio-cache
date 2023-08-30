@@ -8,6 +8,10 @@
 Changes
 =======
 
+Version 1.2.0 (released 2023-08-30)
+
+- Add common mutex lock class
+
 Version 1.1.1 (released 2022-05-23)
 
 - Moved from setup.py to setup.cfg
