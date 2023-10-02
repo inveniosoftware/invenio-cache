@@ -77,7 +77,7 @@ from .decorators import cached_unless_authenticated
 from .ext import InvenioCache
 from .proxies import current_cache, current_cache_ext
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 __all__ = (
     "__version__",
