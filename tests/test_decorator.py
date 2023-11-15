@@ -12,9 +12,10 @@ import hashlib
 import time
 
 import pytest
+from flask import g
 
 from invenio_cache import cached_unless_authenticated
-from invenio_cache.decorators import cached_with_expiration
+from invenio_cache.decorators import cache_in_g, cached_with_expiration
 
 
 def test_decorator_cached_unless_authenticated(base_app, ext):
@@ -127,3 +128,77 @@ def test_decorator_cached_with_expiration(mocker):
         hits, misses = get_cached_only_args.cache_info()
         assert hits == 2
         assert misses == 2
+
+
+def test_cache_in_g_with_custom_key(app):
+    """Test cache_in_g decorator with a custom key."""
+
+    side_effect = []
+
+    @cache_in_g(cache_key="custom_key")
+    def dummy_function(arg1, arg2, kwarg1=None):
+        result = arg1 + arg2
+        side_effect.append(result)  # Simulating a side effect
+        return result
+
+    # First call, not in cache
+    result1 = dummy_function(1, 2)
+    assert result1 == 3
+    assert side_effect == [3]
+    assert g._cache.get("custom_key") == 3
+
+    # Second call with the same arguments, should be retrieved from cache
+    result2 = dummy_function(1, 2)
+    assert result2 == 3
+    # Check that the side effect did not occur again (indicating the result was retrieved from the cache)
+    assert side_effect == [3]
+
+
+def test_cache_in_g_with_fallback_key(app):
+    """Test cache_in_g decorator without a custom key."""
+
+    side_effect = []
+
+    @cache_in_g()
+    def dummy_function(arg1, arg2, kwarg1=None):
+        result = arg1 + arg2
+        side_effect.append(result)  # Simulating a side effect
+        return result
+
+    # First call, not in cache
+    result1 = dummy_function(1, 2)
+    assert result1 == 3
+    assert side_effect == [3]
+    assert len(g._cache.values()) == 1
+    assert list(g._cache.values())[0] == 3
+
+    # Second call with the same arguments, should be retrieved from cache
+    result2 = dummy_function(1, 2)
+    assert result2 == 3
+    # Check that the side effect did not occur again (indicating the result was retrieved from the cache)
+    assert side_effect == [3]
+
+
+def test_cache_in_g_with_fallback_key_and_kwarg(app):
+    """Test cache_in_g decorator with a custom key and with kwargs."""
+
+    side_effect = []
+
+    @cache_in_g()
+    def dummy_function(arg1, arg2, kwarg1=None):
+        result = arg1 + arg2 + (kwarg1 or 0)
+        side_effect.append(result)  # Simulating a side effect
+        return result
+
+    # First call, not in cache
+    result1 = dummy_function(1, 2, kwarg1=3)
+    assert result1 == 6
+    assert side_effect == [6]
+    assert len(g._cache.values()) == 1
+    assert list(g._cache.values())[0] == 6
+
+    # Second call with the same arguments, should be retrieved from cache
+    result2 = dummy_function(1, 2, kwarg1=3)
+    assert result2 == 6
+    # Check that the side effect did not occur again (indicating the result was retrieved from the cache)
+    assert side_effect == [6]

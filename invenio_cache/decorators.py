@@ -13,6 +13,8 @@ import threading
 import time
 from functools import wraps
 
+from flask import g
+
 from .proxies import current_cache, current_cache_ext
 
 
@@ -101,3 +103,40 @@ def cached_with_expiration(f):
     wrapper.cache_clear = cache_clear
     wrapper.cache_info = cache_info
     return wrapper
+
+
+def cache_in_g(cache_key=None):
+    """
+    A decorator for caching function results in Flask's 'g' object for the duration of a request.
+
+    Parameters:
+    :param ache_key (str or None): A custom cache key. If provided, the result will be cached using this key.
+    If not provided, a fallback key is generated based on the function name, arguments, and keyword arguments.
+
+    Usage:
+    @cache_in_g(cache_key="custom_key")
+    def my_function(arg1, arg2, kwarg1=None):
+    # Function logic...
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if not hasattr(g, "_cache"):
+                g._cache = {}
+
+            key = cache_key or (func.__name__, *args, frozenset(kwargs.items()))
+
+            cached_result = g._cache.get(key)
+            if cached_result is not None:
+                return cached_result
+
+            result = func(*args, **kwargs)
+
+            g._cache[key] = result
+
+            return result
+
+        return wrapper
+
+    return decorator
