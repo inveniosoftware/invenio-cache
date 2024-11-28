@@ -9,6 +9,11 @@
 Changes
 =======
 
+Version 2.0.0 (released 2024-12-03)
+
+- setup: replace invenio-accounts with flask-login
+- setup: bump major dependencies
+
 Version 1.3.1 (released 2024-11-28)
 
 - setup: pin dependencies
