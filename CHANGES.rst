@@ -9,6 +9,10 @@
 Changes
 =======
 
+Version <next>
+
+- init: build redis url from its parts if available
+
 Version 2.0.0 (released 2024-12-03)
 
 - setup: replace invenio-accounts with flask-login
