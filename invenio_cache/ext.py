@@ -35,6 +35,32 @@ class InvenioCache(object):
         )
         app.extensions["invenio-cache"] = self
 
+    def build_redis_url(self, app, db=0):
+        """Return the redis connection string if configured or build it from its parts.
+
+        If set, then ``CACHE_REDIS_URL`` will be returned.
+        Otherwise, the URI will be pieced together by the configuration items
+        ``KV_CACHE_{PASSWORD,HOST,PORT,NAME,PROTOCOL}``.
+        If that cannot be done (e.g. because required values are missing), then
+        ``None`` will be returned.
+
+        Note: see: https://docs.celeryq.dev/en/stable/userguide/configuration.html#new-lowercase-settings
+        """
+        if url := app.config.get("CACHE_REDIS_URL", None):
+            return url
+
+        params = {}
+        for config_name in ["HOST", "PORT", "PASSWORD", "PROTOCOL"]:
+            params[config_name] = app.config.get(f"KV_CACHE_{config_name}", None)
+
+        if params.get("HOST") and params.get("PORT"):
+            protocol = params.get("PROTOCOL", "redis")
+            password = f":{params['PASSWORD']}@" if params.get("PASSWORD") else ""
+            cache_url = f"{protocol}://{password}{params['HOST']}:{params['PORT']}/{db}"
+            return cache_url
+
+        return None
+
     def init_config(self, app):
         """Initialize configuration."""
         for k in dir(config):
