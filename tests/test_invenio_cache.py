@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2018 CERN.
+# Copyright (C) 2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,9 +11,7 @@
 
 from __future__ import absolute_import, print_function
 
-import pkg_resources
 from flask import Flask
-from flask_login import current_user
 from mock import patch
 
 from invenio_cache import (
@@ -76,8 +75,15 @@ def test_callback():
     )
 
 
-@patch("pkg_resources.get_distribution")
-def test_callback_no_login(get_distribution):
+@patch("builtins.__import__")
+def test_callback_no_login(mock_import):
     """Test callback factory (no flask-login)."""
-    get_distribution.side_effect = pkg_resources.DistributionNotFound
+
+    # Mock ImportError when trying to import flask_login
+    def side_effect(name, *args, **kwargs):
+        if name == "flask_login":
+            raise ImportError("No module named 'flask_login'")
+        return __import__(name, *args, **kwargs)
+
+    mock_import.side_effect = side_effect
     assert _callback_factory(None)() is False
