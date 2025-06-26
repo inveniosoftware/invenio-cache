@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2018 CERN.
+# Copyright (C) 2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +11,6 @@
 
 from __future__ import absolute_import, print_function
 
-import pkg_resources
 from flask_caching import Cache
 from werkzeug.utils import import_string
 
@@ -46,11 +46,10 @@ def _callback_factory(callback_imp):
     """Factory for creating a is authenticated callback."""
     if callback_imp is None:
         try:
-            pkg_resources.get_distribution("flask-login")
             from flask_login import current_user
 
             return lambda: current_user.is_authenticated
-        except pkg_resources.DistributionNotFound:
+        except ImportError:
             return lambda: False
     elif isinstance(callback_imp, string_types):
         return import_string(callback_imp)
