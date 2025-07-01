@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2018 CERN.
-# Copyright (C) 2024 Graz University of Technology.
+# Copyright (C) 2024-2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -78,7 +78,7 @@ from .decorators import cached_unless_authenticated
 from .ext import InvenioCache
 from .proxies import current_cache, current_cache_ext
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 
 __all__ = (
     "__version__",
