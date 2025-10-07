@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2018 CERN.
+# Copyright (C) 2025 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -20,7 +21,7 @@ CACHE_KEY_PREFIX = "cache::"
 """Cache key prefix."""
 
 #: Sets the cache type.
-CACHE_TYPE = "redis"
+CACHE_TYPE = "flask_caching.backends.redis"
 """Cache type.
 
 Please refer to Flask-Caching documentation for other cache types.
