@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2023 CERN.
+# Copyright (C) 2025 Graz University of Technology.
 #
 # Invenio-Cache is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Lock mechanisms."""
 
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from flask import current_app
 
@@ -52,7 +53,7 @@ class Lock:
         :type lock_id: str
         """
         self.lock_id = lock_id
-        self._created = datetime.utcnow()
+        self._created = datetime.now(timezone.utc)
 
     def __enter__(self):
         """Entering the context."""
