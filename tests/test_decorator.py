@@ -2,6 +2,7 @@
 #
 # This file is part of Invenio.
 # Copyright (C) 2017-2023 CERN.
+# Copyright (C) 2026 Graz University of Technology.
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
@@ -77,12 +78,12 @@ def test_decorator_cached_with_expiration(mocker):
     assert misses == 1
 
     expired = time.time() + one_hour + 10
-    with mocker.patch("time.time", return_value=expired):
-        # cache miss because it expired
-        assert get_cached_only_args("value1") == "value1"
-        hits, misses = get_cached_only_args.cache_info()
-        assert hits == 1
-        assert misses == 2
+    mocker.patch("time.time", return_value=expired)
+    # cache miss because it expired
+    assert get_cached_only_args("value1") == "value1"
+    hits, misses = get_cached_only_args.cache_info()
+    assert hits == 1
+    assert misses == 2
 
     # tests args/kwargs
     assert get_cached_only_args("value1") == "value1"
@@ -107,23 +108,23 @@ def test_decorator_cached_with_expiration(mocker):
     assert misses == 1
 
     still_valid = now + one_hour
-    with mocker.patch("time.time", return_value=still_valid):
-        assert get_cached_only_args("value1") == "value1"
-        hits, misses = get_cached_only_args.cache_info()
-        assert hits == 1
-        assert misses == 1
+    mocker.patch("time.time", return_value=still_valid)
+    assert get_cached_only_args("value1") == "value1"
+    hits, misses = get_cached_only_args.cache_info()
+    assert hits == 1
+    assert misses == 1
 
     entropy = int(hashlib.md5(str(("value1",)).encode()).hexdigest(), 16) % 100
     still_valid_with_entropy = still_valid + entropy - 1  # -1 sec to be still valid
-    with mocker.patch("time.time", return_value=still_valid_with_entropy):
-        assert get_cached_only_args("value1") == "value1"
-        hits, misses = get_cached_only_args.cache_info()
-        assert hits == 2
-        assert misses == 1
+    mocker.patch("time.time", return_value=still_valid_with_entropy)
+    assert get_cached_only_args("value1") == "value1"
+    hits, misses = get_cached_only_args.cache_info()
+    assert hits == 2
+    assert misses == 1
 
     expired = still_valid + entropy
-    with mocker.patch("time.time", return_value=expired):
-        assert get_cached_only_args("value1") == "value1"
-        hits, misses = get_cached_only_args.cache_info()
-        assert hits == 2
-        assert misses == 2
+    mocker.patch("time.time", return_value=expired)
+    assert get_cached_only_args("value1") == "value1"
+    hits, misses = get_cached_only_args.cache_info()
+    assert hits == 2
+    assert misses == 2
