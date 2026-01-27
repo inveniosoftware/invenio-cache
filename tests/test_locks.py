@@ -5,6 +5,7 @@
 # Invenio-cache is free software; you can redistribute it and/or modify
 # it under the terms of the MIT License; see LICENSE file for more details.
 """Test locks."""
+
 import pytest
 
 from invenio_cache.errors import LockAcquireFailed
