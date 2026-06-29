@@ -1,5 +1,70 @@
+# SPDX-FileCopyrightText: 2017-2018 CERN.
+# SPDX-FileCopyrightText: 2022-2026 Graz University of Technology.
+# SPDX-FileCopyrightText: 2026 TU Wien.
+# SPDX-License-Identifier: MIT
+
+[project]
+name = "invenio-cache"
+description = "Cache module for Invenio."
+readme = "README.rst"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+  { name = "CERN", email = "info@inveniosoftware.org" },
+]
+keywords = [
+  "cache",
+  "invenio",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+]
+dependencies = [
+  "flask-caching>=1.8.0",
+  "invenio-base>=2.0.0,<3.0.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/inveniosoftware/invenio-cache"
+
+[project.entry-points."invenio_base.api_apps"]
+invenio_cache = "invenio_cache:InvenioCache"
+
+[project.entry-points."invenio_base.apps"]
+invenio_cache = "invenio_cache:InvenioCache"
+
+[project.optional-dependencies]
+tests = [
+  "flask-login>=0.6.3",
+  "mock>=2.0.0",
+  "pytest-black>=0.6.0",
+  "pytest-invenio>=4.0.0,<5.0.0",
+  "pytest-mock>=1.6.0",
+  "redis>=2.10.5",
+  "sphinx>=3",
+]
 
 [build-system]
-requires = ["setuptools", "wheel", "babel>2.8"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+[tool.hatch.version]
+path = "invenio_cache/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/invenio_cache",
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.pydocstyle]
+add_ignore = "D401"
+
+[tool.pytest.ini_options]
+addopts = '--black --isort --pydocstyle --doctest-glob="*.rst" --doctest-modules --cov=invenio_cache --cov-report=term-missing'
+filterwarnings = ["ignore::pytest.PytestDeprecationWarning"]
+testpaths = "tests invenio_cache"
+live_server_scope = "module"
