@@ -1,5 +1,0 @@
-# SPDX-FileCopyrightText: 2017-2018 CERN.
-# SPDX-License-Identifier: MIT
-
--e git+https://github.com/sh4nks/flask-caching.git#egg=Flask-Caching
--e git+https://github.com/inveniosoftware/invenio-base.git#egg=invenio-base
