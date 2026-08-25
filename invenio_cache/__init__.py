@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2017-2018 CERN.
 # SPDX-FileCopyrightText: 2024-2026 Graz University of Technology.
 # SPDX-FileCopyrightText: 2026 TU Wien.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Cache module for Invenio.
@@ -12,7 +13,7 @@ Create a Flask application:
 
 >>> from flask import Flask
 >>> app = Flask('myapp')
->>> app.config['CACHE_TYPE'] = 'simple'
+>>> app.config['CACHE_TYPE'] = 'SimpleCache'
 
 Initialize Invenio-Cache:
 

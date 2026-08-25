@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2017-2018 CERN.
 # SPDX-FileCopyrightText: 2025 Graz University of Technology.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Module tests."""
@@ -28,12 +29,12 @@ def test_version():
 def test_init():
     """Test extension initialization."""
     app = Flask("testapp")
-    app.config.update(CACHE_TYPE="simple")
+    app.config.update(CACHE_TYPE="SimpleCache")
     ext = InvenioCache(app)
     assert "invenio-cache" in app.extensions
 
     app = Flask("testapp")
-    app.config.update(CACHE_TYPE="simple")
+    app.config.update(CACHE_TYPE="SimpleCache")
     ext = InvenioCache()
     assert "invenio-cache" not in app.extensions
     ext.init_app(app)

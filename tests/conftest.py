@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2017-2018 CERN.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Pytest configuration."""
@@ -36,18 +37,18 @@ def template_folder(instance_path):
 @pytest.fixture()
 def cache_config():
     """Generate cache configuration."""
-    CACHE_TYPE = os.environ.get("CACHE_TYPE", "simple")
+    CACHE_TYPE = os.environ.get("CACHE_TYPE", "SimpleCache")
     config = {"CACHE_TYPE": CACHE_TYPE}
 
-    if CACHE_TYPE == "simple":
+    if CACHE_TYPE == "SimpleCache":
         pass
-    elif CACHE_TYPE == "redis":
+    elif CACHE_TYPE == "RedisCache":
         config.update(
             CACHE_REDIS_URL=os.environ.get(
                 "CACHE_REDIS_URL", "redis://localhost:6379/0"
             )
         )
-    elif CACHE_TYPE == "memcached":
+    elif CACHE_TYPE == "MemcachedCache":
         config.update(
             CACHE_MEMCACHED_SERVERS=os.environ.get(
                 "CACHE_MEMCACHED_SERVERS", "localhost:11211"

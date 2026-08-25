@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2017-2018 CERN.
 # SPDX-FileCopyrightText: 2025 Graz University of Technology.
+# SPDX-FileCopyrightText: 2026 KTH Royal Institute of Technology.
 # SPDX-License-Identifier: MIT
 
 """Configuration for Invenio-Cache module.
@@ -16,7 +17,7 @@ CACHE_KEY_PREFIX = "cache::"
 """Cache key prefix."""
 
 #: Sets the cache type.
-CACHE_TYPE = "flask_caching.backends.redis"
+CACHE_TYPE = "flask_caching.backends.RedisCache"
 """Cache type.
 
 Please refer to Flask-Caching documentation for other cache types.
