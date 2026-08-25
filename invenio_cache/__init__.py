@@ -16,7 +16,7 @@ Create a Flask application:
 
 >>> from flask import Flask
 >>> app = Flask('myapp')
->>> app.config['CACHE_TYPE'] = 'simple'
+>>> app.config['CACHE_TYPE'] = 'SimpleCache'
 
 Initialize Invenio-Cache:
 
