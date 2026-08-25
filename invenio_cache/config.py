@@ -20,7 +20,7 @@ CACHE_KEY_PREFIX = "cache::"
 """Cache key prefix."""
 
 #: Sets the cache type.
-CACHE_TYPE = "redis"
+CACHE_TYPE = "flask_caching.backends.RedisCache"
 """Cache type.
 
 Please refer to Flask-Caching documentation for other cache types.

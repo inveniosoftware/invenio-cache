@@ -33,12 +33,12 @@ def test_version():
 def test_init():
     """Test extension initialization."""
     app = Flask("testapp")
-    app.config.update(CACHE_TYPE="simple")
+    app.config.update(CACHE_TYPE="SimpleCache")
     ext = InvenioCache(app)
     assert "invenio-cache" in app.extensions
 
     app = Flask("testapp")
-    app.config.update(CACHE_TYPE="simple")
+    app.config.update(CACHE_TYPE="SimpleCache")
     ext = InvenioCache()
     assert "invenio-cache" not in app.extensions
     ext.init_app(app)
