@@ -11,6 +11,25 @@ from functools import wraps
 from .proxies import current_cache, current_cache_ext
 
 
+def cached_including_authenticated(timeout=50, key_prefix="default"):
+    """Cache a function.
+    WARNING: do not use for user dependant functions.
+    """
+
+    def caching(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            cache_fun = current_cache.cached(
+                timeout=timeout,
+                key_prefix=key_prefix,
+            )
+            return cache_fun(f)(*args, **kwargs)
+
+        return wrapper
+
+    return caching
+
+
 def cached_unless_authenticated(timeout=50, key_prefix="default"):
     """Cache anonymous traffic."""
 

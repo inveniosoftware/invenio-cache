@@ -71,7 +71,7 @@ as cache decorators for view, memoization of functions, Jinja snippet caching.
 from __future__ import absolute_import, print_function
 
 from .bccache import BytecodeCache
-from .decorators import cached_unless_authenticated
+from .decorators import cached_including_authenticated, cached_unless_authenticated
 from .ext import InvenioCache
 from .proxies import current_cache, current_cache_ext
 
@@ -79,6 +79,7 @@ __version__ = "3.0.2"
 
 __all__ = (
     "__version__",
+    "cached_including_authenticated",
     "cached_unless_authenticated",
     "current_cache_ext",
     "current_cache",
