@@ -9,6 +9,12 @@
 Changes
 =======
 
+Version 2.1.1 (released 2026-10-30)
+
+- fix(cache): use flask-caching class names
+- chore(black): update formatting to >= 26.0
+- tests: run tests on maint and feature branches
+
 Version 2.1.0 (released 2025-07-01)
 
 - fix: pkg_resources DeprecationWarning
